@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Daniel Duvic / 001
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -121,7 +121,7 @@ public class Graph {
     for (int i = 0; i < numVertices; i++) {
       if (!hasIncomingEdge[i]) {
         if (root != -1) {
-          return -1; // More than one root found
+          return -1;
         }
         root = i;
       }

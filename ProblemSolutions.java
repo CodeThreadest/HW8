@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   ADD YOUR NAME / SECTION NUMBER HERE
+ *   Daniel Duvic / 001
  *
  *   This java file contains the problem solutions of canFinish and
  *   numGroups methods.
@@ -72,18 +72,38 @@ class ProblemSolutions {
      * @return boolean          - True if all exams can be taken, else false.
      */
 
-    public boolean canFinish(int numExams, 
-                             int[][] prerequisites) {
-      
+    public boolean canFinish(int numExams, int[][] prerequisites) {
         int numNodes = numExams;  // # of nodes in graph
 
         // Build directed graph's adjacency list
-        ArrayList<Integer>[] adj = getAdjList(numExams, 
-                                        prerequisites); 
+        ArrayList<Integer>[] adj = getAdjList(numExams, prerequisites);
 
         // ADD YOUR CODE HERE - ADD YOUR NAME / SECTION AT TOP OF FILE
-        return false;
+        int[] inDegree = new int[numNodes];
+        for (int[] prerequisite : prerequisites) {
+            inDegree[prerequisite[1]]++;
+        }
 
+        Queue<Integer> queue = new ArrayDeque<>();
+        for(int i = 0; i < numNodes; i++) {
+            if(inDegree[i] == 0) {
+                queue.add(i);
+            }
+        }
+
+        int count = 0;
+        while(!queue.isEmpty()) {
+            int curr = queue.poll();
+            count++;
+            for(int neighbor : adj[curr]) {
+                inDegree[neighbor]--;
+                if(inDegree[neighbor] == 0) {
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        return count == numNodes;
     }
 
 
@@ -98,11 +118,9 @@ class ProblemSolutions {
      * @return ArrayList<Integer>[]  - An adjacency list representing the provided graph.
      */
 
-    private ArrayList<Integer>[] getAdjList(
-            int numNodes, int[][] edges) {
+    private ArrayList<Integer>[] getAdjList(int numNodes, int[][] edges) {
 
-        ArrayList<Integer>[] adj 
-                    = new ArrayList[numNodes];      // Create an array of ArrayList ADT
+        ArrayList<Integer>[] adj = new ArrayList[numNodes];      // Create an array of ArrayList ADT
 
         for (int node = 0; node < numNodes; node++){
             adj[node] = new ArrayList<Integer>();   // Allocate empty ArrayList per node
@@ -165,7 +183,7 @@ class ProblemSolutions {
 
     public int numGroups(int[][] adjMatrix) {
         int numNodes = adjMatrix.length;
-        Map<Integer,List<Integer>> graph = new HashMap();
+        Map<Integer,List<Integer>> graph = new HashMap<>();
         int i = 0, j =0;
 
         /*
@@ -192,7 +210,31 @@ class ProblemSolutions {
 
         // YOUR CODE GOES HERE - you can add helper methods, you do not need
         // to put all code in this method.
-        return -1;
+        boolean[] visited = new boolean[numNodes];
+        int groupCount = 0;
+
+        for (i = 0; i < numNodes; i++) {
+            if (!visited[i]) {
+                groupCount++;
+                Stack<Integer> stack = new Stack<>();
+                stack.push(i);
+                while (!stack.isEmpty()) {
+                    int node = stack.pop();
+                    if (!visited[node]) {
+                        visited[node] = true;
+                        if (graph.containsKey(node)) {
+                            for (int neighbor : graph.get(node)) {
+                                if (!visited[neighbor]) {
+                                    stack.push(neighbor);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return groupCount;
     }
 
 }
