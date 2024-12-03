@@ -127,6 +127,6 @@ public class Graph {
       }
     }
 
-    return root;
+    return root == -1 ? -1 : vertexValues.get(root);
   } 
 }
