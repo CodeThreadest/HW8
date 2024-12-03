@@ -104,7 +104,29 @@ public class Graph {
   
   public int findRoot() {
 
+
     // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME/SECTION AT TOP OF FILE
-    return -1;
+    boolean[] hasIncomingEdge = new boolean[numVertices];
+
+    // Mark vertices that have incoming edges
+    for (int i = 0; i < numVertices; i++) {
+      for (Integer neighbor : adjListArr[i]) {
+        hasIncomingEdge[neighbor] = true;
+      }
+    }
+
+    int root = -1;
+
+    // Find the vertex with no incoming edges
+    for (int i = 0; i < numVertices; i++) {
+      if (!hasIncomingEdge[i]) {
+        if (root != -1) {
+          return -1; // More than one root found
+        }
+        root = i;
+      }
+    }
+
+    return root;
   } 
 }
